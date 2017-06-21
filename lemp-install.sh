@@ -10,6 +10,7 @@ yum install nginx -y
 \cp nginx/nginx.conf /etc/nginx/
 \cp nginx/security.inc /etc/nginx/conf.d/
 \cp nginx/logging.inc /etc/nginx/conf.d/
+\cp nginx/wordpress.inc /etc/nginx/conf.d/
 #mv /etc/nginx/conf.d/default.conf /etc/nginx/conf.d/default.conf.old
 
 # Diffie-Hellman cipher:
