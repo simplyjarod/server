@@ -1,7 +1,7 @@
 #############
 # BLOCK SPAM:
 #############
-if ($query_string ~* (ultram|unicauca|valium|viagra|vicodin|xanax|ypxaieo|erections|hoodia|huronriveracres|impotence|levitra|libido|ambien|blue\spill|cialis|cocaine|ejaculation|erectile|lipitor|phentermin|pro[sz]ac|sandyauer|tramadol|troyhamby)) {
+if ($query_string ~* (ambien|blue\spill|cialis|cocaine|ejaculation|erectile|erections|hoodia|huronriveracres|impotence|levitra|libido|lipitor|phentermin|pro[sz]ac|sandyauer|tramadol|troyhamby|ultram|unicauca|valium|viagra|vicodin|xanax|ypxaieo)) {
 	return 403;
 }
 
@@ -9,7 +9,7 @@ if ($query_string ~* (ultram|unicauca|valium|viagra|vicodin|xanax|ypxaieo|erecti
 ####################
 # BLOCK USER AGENTS:
 ####################
-if ($http_user_agent ~* (curl|wget|WordPress|Python|PycURL|Pyth|perl|libwww-perl|GetRight|GetWeb!|Go!Zilla|Go-Ahead-Got-It|TurnitinBot|GrabNet|Baiduspider|MetaURI|Widow|BlackWidow|netcrawl|npbot|malicious|Antivirx|Arian|WebWhacker|AhrefsBot)) {
+if ($http_user_agent ~* (AhrefsBot|Antivirx|Arian|Baiduspider|The\sBeast|BlackWidow|BUbiNG|curl|GetRight|GetWeb!|Go!Zilla|Go-Ahead-Got-It|GrabNet|libwww-perl|malicious|MetaURI|netcrawl|npbot|perl|Pyth|Python|PycURL|TurnitinBot|WebWhacker|wget|Widow|WordPress)) {
 	return 403;
 }
 
