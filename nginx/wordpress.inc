@@ -22,7 +22,7 @@ location ~* /(?:uploads|files)/.*\.php$ {
 
 
 # Disable access to some files:
-location ~ /(.|license.txt|readme.html|wp-config.php|wp-config-sample.php|wp-comments-post.php) {
+location ~* /(license.txt|readme.html|wp-config.php|wp-config-sample.php|wp-comments-post.php) {
   deny all;
 }
 
