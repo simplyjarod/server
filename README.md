@@ -1,5 +1,5 @@
 # server
-CentOS 6 & CentOS 7 server installations and configurations
+CentOS 6 & CentOS 7 server installations and configurations.
 
 Please, download *all files* before executing any script. There are several dependencies between them. You can use:
 ```bash
@@ -22,17 +22,17 @@ This script will execute:
 
 
 ## nginx: add virtual host
-Run `./nginx-add-virtual-host.sh` as **root** from the folder you have placed the file.
+Run `./nginx-add-virtual-host.sh` as **root** from the folder you have placed the file.  
 It is mandatory to have nginx installed previously (you can run `./lemp-install.sh`).
 
 
 ## mysql: create and remove database and user
-Run `./mysql-create-db-and-user.sh` from the folder you have placed the file. You will be asked for mysql's root password.
-Run `./mysql-remove-db-and-user.sh` from the folder you have placed the file. You will be asked for mysql's root password.
+Run `./mysql-create-db-and-user.sh` from the folder you have placed the file. You will be asked for mysql's root password.  
+Run `./mysql-remove-db-and-user.sh` from the folder you have placed the file. You will be asked for mysql's root password.  
 It is mandatory to have mysql or maridb installed previously (you can run `./lemp-install.sh`).
 
 
 ## iptables: accept http and myslq connections
-Run `./iptables-accept-http.sh` as **root** from the folder you have placed the file.
-Run `./iptables-accept-mysql.sh` as **root** from the folder you have placed the file.
+Run `./iptables-accept-http.sh` as **root** from the folder you have placed the file.  
+Run `./iptables-accept-mysql.sh` as **root** from the folder you have placed the file.  
 It is mandatory to have iptables installed previously (you can run [iptables.sh from my system repository] (https://github.com/simplyjarod/system/blob/master/iptables.sh)).
