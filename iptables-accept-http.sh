@@ -20,6 +20,7 @@ fi
 # All IPs area allowed to connect to port 80
 if [[ $ip = * ]]; then 
 	iptables -I INPUT -p tcp --dport 80 -j ACCEPT
+	service iptables save
 	exit 0
 fi
 
@@ -35,6 +36,7 @@ if [[ $ip =~ ^[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}$ ]]; then
 	done
 
 	iptables -I INPUT -p tcp -s $ip --dport 80 -j ACCEPT
+	service iptables save
 	exit 0
 else
 	echo -e "\e[91mThe introduced IP does not seem to be correct.\e[0m"
