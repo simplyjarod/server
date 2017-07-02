@@ -10,14 +10,16 @@ fi
 # Si no hay parametro se pide por pantalla:
 if [ -z $1 ]; then
 	remote_ip="$(echo $SSH_CLIENT | cut -f1 -d" ")"
-	echo "Maybe your current IP address is:" $remote_ip
+	if [ -z $remote_ip ]; then
+		echo "Maybe your current IP address is:" $remote_ip
+	fi
 	read -r -p "IPv4 to add to Firewall to connect to port 80 (* for all IPs): " ip
 else
 	ip=$1
 fi
 
 
-# All IPs area allowed to connect to port 80
+# All IPs are allowed to connect to port 80
 if [[ $ip = * ]]; then 
 	iptables -I INPUT -p tcp --dport 80 -j ACCEPT
 	service iptables save
