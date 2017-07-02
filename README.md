@@ -35,4 +35,4 @@ It is mandatory to have mysql or maridb installed previously (you can run `./lem
 ## iptables: accept http and myslq connections
 Run `./iptables-accept-http.sh` as **root** from the folder you have placed the file.  
 Run `./iptables-accept-mysql.sh` as **root** from the folder you have placed the file.  
-It is mandatory to have iptables installed previously (you can run [iptables.sh from my system repository] (https://github.com/simplyjarod/system/blob/master/iptables.sh)).
+It is mandatory to have iptables installed previously (you can run [iptables.sh from my system repository](https://github.com/simplyjarod/system/blob/master/iptables.sh)).
