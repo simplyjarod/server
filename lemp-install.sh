@@ -1,10 +1,18 @@
 #!/bin/bash
 
+# ARE YOU ROOT (or sudo)?
+if [[ $EUID -ne 0 ]]; then
+	echo -e "\e[91mERROR: This script must be run as root\e[0m"
+	exit 1
+fi
+
 centos_version=$(rpm -qa \*-release | grep -Ei "oracle|redhat|centos" | cut -d"-" -f3)
 
-#
-echo "***** INSTALACION DE NGINX *****"
-#
+
+#####################################
+echo "***** NGINX INSTALLATION *****"
+#####################################
+
 yum install epel-release -y # nginx is not available straight from CentOS
 yum install nginx -y
 \cp nginx/nginx.conf /etc/nginx/
@@ -20,34 +28,38 @@ openssl dhparam -out /etc/nginx/ssl/dhparams.pem 2048
 chkconfig --levels 235 nginx on
 
 
+#############################################
+echo "***** MYSQL/MARIADB INSTALLATION *****"
+#############################################
 
-#
-echo "***** INSTALACION MYSQL/MARIADB *****"
-#
-
+# CentOS 6 installation:
 if [ "$centos_version" -eq 6 ]; then
 	yum install mysql mysql-server -y
+
+# CentOS 7 installation:
 else
-	yum install mariadb mariadb-server -y # for centos 7
+	yum install mariadb mariadb-server -y
 fi
 
 yum install MySQL-python -y
 
+# CentOS 6 installation:
 if [ "$centos_version" -eq 6 ]; then
 	service mysqld start
 	chkconfig --levels 235 mysqld on
+
+# CentOS 7 installation:
 else
-	service mariadb start # for centos 7
+	service mariadb start 
 	chkconfig --levels 235 mariadb on
 fi
 
 /usr/bin/mysql_secure_installation
 
 
-
-#
-echo "***** INSTALACION DE PHP *****"
-#
+###################################
+echo "***** PHP INSTALLATION *****"
+###################################
 yum install php php-fpm php-mysql php-mysqli php-gd php-xml php-mbstring php-mcrypt* php-soap php-mbstring -y
 \cp php/php.ini /etc/
 \cp php/www.conf /etc/php-fpm.d/
@@ -59,32 +71,33 @@ service php-fpm start
 chkconfig --levels 235 php-fpm on
 
 
-
-#
-#echo "***** INSTALACION DE PHP-MYADMIN *****"
-#
+############################################
+#echo "***** PHP-MYADMIN INSTALLATION *****"
+############################################
 #yum install phpmyadmin -y
 
 
-
-# Creamos nuevo virtual host:
+############################
+# Set up a new virtual host:
+############################
 ./nginx-add-virtual-host.sh
 
 
-
-#
-echo "***** CONFIGURANDO FIREWALL (:80) *****"
-#
+if type -path "iptables" > /dev/null 2>&1; then
+###########################################
+echo "***** FIREWALL SETUP (port 80) *****"
+###########################################
 iptables -I INPUT -p tcp --dport 80 -j ACCEPT
 service iptables save
+fi
 
 
-
-#
-echo "***** REINICIANDO SERVIDORES... *****"
-#
+########################################
+echo "***** RESTARTING SERVERS... *****"
+########################################
 service nginx restart
 service php-fpm restart
 service mysqld restart
 
-echo "***** FINALIZADO!! TODO LISTO!! *****"
+
+echo "***** READY! ALL DONE ;) *****"
