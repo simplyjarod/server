@@ -87,8 +87,7 @@ if type -path "iptables" > /dev/null 2>&1; then
 ###########################################
 echo "***** FIREWALL SETUP (port 80) *****"
 ###########################################
-iptables -I INPUT -p tcp --dport 80 -j ACCEPT
-service iptables save
+./iptables-accept-http.sh *
 fi
 
 
