@@ -1,7 +1,7 @@
 # server
 CentOS 6 & CentOS 7 server installations and configurations.
 
-Please, download *all files* before executing any script. There are several dependencies between them. You can use:
+Please, **download _all files_ before executing any script**. There are several dependencies between them. You can use:
 ```bash
 wget https://github.com/simplyjarod/server/archive/master.zip
 unzip master.zip
@@ -9,8 +9,12 @@ rm master.zip -f
 cd server-master
 ```
 
-## LEMP server: Linux + nginx + MySql + php
-Run `./lemp-install.sh` as **root** from the folder you have placed the file.
+## LAMP server: Linux + apache + MySQL + php
+Run `./lamp-install.sh` as **root** from the folder this file is placed.
+
+
+## LEMP server: Linux + nginx + MySQL + php
+Run `./lemp-install.sh` as **root** from the folder this file is placed.
 
 This script will execute:
 1. nginx installation
@@ -22,17 +26,17 @@ This script will execute:
 
 
 ## nginx: add virtual host
-Run `./nginx-add-virtual-host.sh` as **root** from the folder you have placed the file.  
-It is mandatory to have nginx installed previously (you can run `./lemp-install.sh`).
+Run `./nginx-add-virtual-host.sh` as **root** from the folder this file is placed.  
+It is mandatory to have nginx installed previously.
 
 
 ## mysql: create and remove database and user
-Run `./mysql-create-db-and-user.sh` from the folder you have placed the file. You will be asked for mysql's root password.  
-Run `./mysql-remove-db-and-user.sh` from the folder you have placed the file. You will be asked for mysql's root password.  
-It is mandatory to have mysql or maridb installed previously (you can run `./lemp-install.sh`).
+Run `./mysql-create-db-and-user.sh` from the folder this file is placed. You will be asked for **mysql's root password**.  
+Run `./mysql-remove-db-and-user.sh` from the folder this file is placed. You will be asked for **mysql's root password**.  
+It is mandatory to have mysql or maridb installed previously.
 
 
 ## iptables: accept http and myslq connections
-Run `./iptables-accept-http.sh` as **root** from the folder you have placed the file.  
-Run `./iptables-accept-mysql.sh` as **root** from the folder you have placed the file.  
+Run `./iptables-accept-http.sh` as **root** from the folder this file is placed.  
+Run `./iptables-accept-mysql.sh` as **root** from the folder this file is placed.  
 It is mandatory to have iptables installed previously (you can run [iptables.sh from my system repository](https://github.com/simplyjarod/system/blob/master/iptables.sh)).

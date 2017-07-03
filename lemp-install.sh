@@ -60,6 +60,7 @@ fi
 ###################################
 echo "***** PHP INSTALLATION *****"
 ###################################
+
 yum install php php-fpm php-mysql php-mysqli php-gd php-xml php-mbstring php-mcrypt* php-soap php-mbstring -y
 \cp php/php.ini /etc/
 \cp php/www.conf /etc/php-fpm.d/
@@ -71,15 +72,10 @@ service php-fpm start
 chkconfig --levels 235 php-fpm on
 
 
-############################################
-#echo "***** PHP-MYADMIN INSTALLATION *****"
-############################################
-#yum install phpmyadmin -y
-
-
 ############################
 # Set up a new virtual host:
 ############################
+
 ./nginx-add-virtual-host.sh
 
 
@@ -87,6 +83,7 @@ if type -path "iptables" > /dev/null 2>&1; then
 ###########################################
 echo "***** FIREWALL SETUP (port 80) *****"
 ###########################################
+
 ./iptables-accept-http.sh *
 fi
 
@@ -94,6 +91,7 @@ fi
 ########################################
 echo "***** RESTARTING SERVERS... *****"
 ########################################
+
 service nginx restart
 service php-fpm restart
 service mysqld restart
