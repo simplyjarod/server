@@ -5,6 +5,7 @@ Please, **download _all files_ before executing any script**. There are several 
 wget https://github.com/simplyjarod/server/archive/master.zip
 unzip master.zip
 cd server-master
+chmod u+x *.sh -R
 ```
 
 ## LAMP server: Linux + apache + MySQL + php
