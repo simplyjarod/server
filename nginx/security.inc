@@ -10,7 +10,7 @@ if ($query_string ~* (ambien|blue\spill|cialis|cocaine|ejaculation|erectile|erec
 
 
 # BLOCK USER AGENTS:
-if ($http_user_agent ~* (AhrefsBot|Antivirx|Arian|Baiduspider|The\sBeast|BackDoorBot|BackWeb|BlackWidow|BUbiNG|ChinaClaw|curl|EmailWolf|GetRight|GetWeb!|Go!Zilla|Go-Ahead-Got-It|GrabNet|hacker|libwww-perl|malicious|MetaURI|netcrawl|NetSpider|NetZIP|Netcraft|NextGenSearchBot|NimbleCrawler|Ninja|npbot|perl|Octopus|Pyth|Python|PycURL|TurnitinBot|WebBandit|WebCopier|wget|Widow|WordPress|WOW64)) {
+if ($http_user_agent ~* (AhrefsBot|Antivirx|Arian|Baiduspider|The\sBeast|BackDoorBot|BackWeb|BlackWidow|BUbiNG|ChinaClaw|curl|EmailWolf|GetRight|GetWeb!|Go!Zilla|Go-Ahead-Got-It|GrabNet|hacker|libwww-perl|malicious|MetaURI|netcrawl|NetSpider|NetZIP|Netcraft|NextGenSearchBot|NimbleCrawler|Ninja|npbot|perl|Octopus|Pyth|Python|PycURL|TurnitinBot|WebBandit|WebCopier|wget|Widow|WordPress)) {
 	return 403;
 }
 
