@@ -6,6 +6,8 @@ if [[ $EUID -ne 0 ]]; then
 	exit 1
 fi
 
+centos_version=$(rpm -qa \*-release | grep -Ei "oracle|redhat|centos" | cut -d"-" -f3)
+
 
 ######################################
 echo "***** APACHE INSTALLATION *****"
