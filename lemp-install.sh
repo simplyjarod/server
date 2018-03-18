@@ -50,7 +50,7 @@ if [ "$centos_version" -eq 6 ]; then
 
 # CentOS 7 installation:
 else
-	service mariadb start 
+	systemctl start mariadb
 	chkconfig --levels 235 mariadb on
 fi
 
