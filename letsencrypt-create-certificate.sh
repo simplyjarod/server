@@ -34,8 +34,16 @@ service iptables save
 
 /opt/letsencrypt/letsencrypt-auto certonly --standalone -d $domain
 
-#nano /etc/nginx/nginx.conf
-
 service nginx start
 
+echo "##################################"
+echo "YOU NEED TO CHANGE FOLLOWING LINE AT /etc/nginx/conf.d/xxxxxxx.conf"
+echo ">>>listen 80;<<< to >>>listen 443;<<<"
+echo "";
+echo "##################################"
+echo "YOU NEED TO ADD FOLLOWING LINES AT /etc/nginx/conf.d/xxxxxxx.conf"
+echo "ssl on;"
+echo "ssl_certificate /etc/letsencrypt/live/YOUR_MAIN_DOMAIN/fullchain.pem";
+echo "ssl_certificate_key /etc/letsencrypt/live/YOUR_MAIN_DOMAIN/privkey.pem";
+echo "";
 echo "CHECK THIS CERTIFICATE ON: https://www.ssllabs.com/ssltest/analyze.html"
