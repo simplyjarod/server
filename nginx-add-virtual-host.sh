@@ -40,12 +40,12 @@ sed -i "s|CHANGE_THIS_DOMAIN_NAME|$domain|g" /etc/nginx/conf.d/$user.conf
 
 
 # Copy and customization of php-fpm pool config file:
-\cp php/pool.conf /etc/php-fpm.d/$user.conf
-sed -i "s|CHANGE_THIS_USER_NAME|$user|g" /etc/php-fpm.d/$user.conf
+#\cp php/pool.conf /etc/php-fpm.d/$user.conf # only for sockets
+#sed -i "s|CHANGE_THIS_USER_NAME|$user|g" /etc/php-fpm.d/$user.conf # only for sockets
 
-mkdir /var/lib/php/session-$user
-chmod -R 700 /var/lib/php/session-$user
-chown -R $user:nobody /var/lib/php/session-$user
+#mkdir /var/lib/php/session-$user # only for sockets
+#chmod -R 700 /var/lib/php/session-$user # only for sockets
+#chown -R $user:nobody /var/lib/php/session-$user # only for sockets
 
 
 service nginx restart
