@@ -54,7 +54,7 @@ fi
 echo "***** PHP INSTALLATION *****"
 ###################################
 
-yum install php php-mysql php-mysqli php-gd php-xml php-mbstring php-mcrypt* php-soap php-mbstring -y
+yum install php php-mysql php-mysqli php-gd php-xml php-mbstring php-mcrypt* php-soap php-mbstring php-bcmath -y
 \cp php/php.ini /etc/php.ini
 \cp php/index.php /var/www/html/index.php
 
