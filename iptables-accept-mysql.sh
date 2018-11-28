@@ -20,7 +20,8 @@ fi
 
 
 # All IPs are allowed to connect to port 3306
-if [[ $ip = * ]]; then 
+if [[ $ip = "*" ]]; then 
+	echo "All IPs will be allowed to connect through port 3306"
 	iptables -I INPUT -p tcp --dport 3306 -j ACCEPT
 	service iptables save
 	exit 0
