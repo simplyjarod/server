@@ -20,7 +20,8 @@ fi
 
 
 # All IPs are allowed to connect to port 80
-if [[ $ip = * ]]; then 
+if [[ $ip = "*" ]]; then
+        echo "All IPs will be allowed to connect through port 80"
 	iptables -I INPUT -p tcp --dport 80 -j ACCEPT
 	service iptables save
 	exit 0
