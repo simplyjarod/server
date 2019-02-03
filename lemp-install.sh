@@ -31,30 +31,7 @@ chkconfig --levels 235 nginx on
 #############################################
 echo "***** MYSQL/MARIADB INSTALLATION *****"
 #############################################
-
-# CentOS 6 installation:
-if [ "$centos_version" -eq 6 ]; then
-	yum install mysql mysql-server -y
-
-# CentOS 7 installation:
-else
-	yum install mariadb mariadb-server -y
-fi
-
-yum install MySQL-python -y
-
-# CentOS 6 installation:
-if [ "$centos_version" -eq 6 ]; then
-	service mysqld start
-	chkconfig --levels 235 mysqld on
-
-# CentOS 7 installation:
-else
-	systemctl start mariadb
-	chkconfig --levels 235 mariadb on
-fi
-
-/usr/bin/mysql_secure_installation
+./mariadb-install.sh
 
 
 ###################################
@@ -94,7 +71,7 @@ echo "***** RESTARTING SERVERS... *****"
 
 service nginx restart
 service php-fpm restart
-service mysqld restart
+service mysql restart
 
 
 echo "***** READY! ALL DONE ;) *****"
