@@ -38,7 +38,7 @@ echo "***** MYSQL/MARIADB INSTALLATION *****"
 echo "***** PHP INSTALLATION *****"
 ###################################
 
-yum install php php-fpm php-mysql php-mysqli php-gd php-xml php-mbstring php-mcrypt* php-soap php-mbstring php-bcmath -y
+yum install php php-fpm php-mysql php-mysqli php-gd php-xml php-mbstring php-mcrypt* php-soap php-bcmath -y
 \cp php/php.ini /etc/
 \cp php/www.conf /etc/php-fpm.d/
 chown root:nginx /var/lib/php/session/
