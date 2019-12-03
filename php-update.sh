@@ -13,16 +13,16 @@ centos_version=$(rpm -qa \*-release | grep -Ei "oracle|redhat|centos" | cut -d"-
 #########################
 if [ "$centos_version" -eq 6 ]; then
 
-  rpm -Uvh https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm
-  rpm -Uvh https://rpms.remirepo.net/enterprise/remi-release-7.rpm
+  rpm -Uvh https://dl.fedoraproject.org/pub/epel/epel-release-latest-6.noarch.rpm
+  rpm -Uvh https://rpms.remirepo.net/enterprise/remi-release-6.rpm
   
 #########################
 # CentOS 7 installation #
 #########################
 else
 
-  rpm -Uvh https://dl.fedoraproject.org/pub/epel/epel-release-latest-6.noarch.rpm
-  rpm -Uvh https://rpms.remirepo.net/enterprise/remi-release-6.rpm
+  rpm -Uvh https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm
+  rpm -Uvh https://rpms.remirepo.net/enterprise/remi-release-7.rpm
 
 fi
 
@@ -33,7 +33,7 @@ sed -i "0,/enabled=0/s/enabled=0/enabled=1/" $repofile
 sed -i "0,/#mirrorlist/s/#mirrorlist/mirrorlist/" $repofile
 
 
-yum upgrade php* -y
+yum upgrade php -y
 
 service php-fpm restart
 service nginx restart
