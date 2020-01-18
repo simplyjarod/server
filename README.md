@@ -4,8 +4,7 @@ Please, **download _all files_ before executing any script**. There are several 
 ```bash
 sudo yum install wget unzip -y
 wget https://github.com/simplyjarod/server/archive/master.zip
-unzip master.zip
-cd server-master
+unzip master.zip && cd server-master && rm -rf ../master.zip
 chmod u+x *.sh -R
 ```
 
