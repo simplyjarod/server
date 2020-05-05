@@ -51,3 +51,6 @@ sed -i "s|username_here|$dbuser|g" $path/wp-config-sample.php
 sed -i "s|password_here|$dbpass|g" $path/wp-config-sample.php
 
 mv $path/wp-config-sample.php $path/wp-config.php
+
+rm -f $path/readme.html
+rm -f $path/license.txt
