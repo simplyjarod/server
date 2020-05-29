@@ -1,49 +1,32 @@
 #!/bin/bash
 
-# MANY THANKS TO: http://www.tecmint.com/setup-https-with-lets-encrypt-ssl-certificate-for-nginx-on-centos/
-
-
 # ARE YOU ROOT (or sudo)?
 if [[ $EUID -ne 0 ]]; then
 	echo -e "\e[91mERROR: This script must be run as root\e[0m"
 	exit 1
 fi
 
-
-read -r -p "Domain/s to setup SSL: (space separated - e.g.: 'jarod.es www.jarod.es blog.jarod.es') " domain
-domain=$(echo $domain | sed 's/ / -d /g')
+centos_version=$(rpm -qa \*-release | grep -Ei "oracle|redhat|centos" | cut -d"-" -f3)
 
 
-# CONTINUE OR NOT?
-read -r -p "Proceed with certificate installation for $domain? (nginx will be stopped) [y/N] " response
-res=${response,,} # tolower
-if ! [[ $res =~ ^(yes|y)$ ]]
-then
-	echo "Process aborted"
+if [ "$centos_version" -eq 6 ]; then
+	wget https://dl.eff.org/certbot-auto
+	mv certbot-auto /usr/local/bin/certbot-auto
+	chown root /usr/local/bin/certbot-auto
+	chmod 0755 /usr/local/bin/certbot-auto
+	/usr/local/bin/certbot-auto --nginx
+	echo "0 0,12 * * * root python -c 'import random; import time; time.sleep(random.random() * 3600)' && /usr/local/bin/certbot-auto renew -q" | sudo tee -a /etc/crontab > /dev/null
+	
+elif [ "$centos_version" -eq 7 ]; then
+	yum install certbot python2-certbot-nginx
+	certbot --nginx
+	echo "0 0,12 * * * root python -c 'import random; import time; time.sleep(random.random() * 3600)' && certbot renew -q" | sudo tee -a /etc/crontab > /dev/null
+	
+elif [ "$centos_version" -eq 8 ]; then
+	dnf install certbot python3-certbot-nginx
+	certbot --nginx
+	echo "0 0,12 * * * root python -c 'import random; import time; time.sleep(random.random() * 3600)' && certbot renew -q" | sudo tee -a /etc/crontab > /dev/null
+else
+	echo -e "\e[91mERROR: This script is not ready for your OS\e[0m"
 	exit 1
 fi
-
-yum install epel-release -y
-yum install git -y
-
-git clone https://github.com/letsencrypt/letsencrypt /opt/letsencrypt
-
-service nginx stop # yes, port 80 has to be unused while the installation
-iptables -I INPUT -p tcp --dport 443 -j ACCEPT
-service iptables save
-
-/opt/letsencrypt/letsencrypt-auto certonly --standalone -d $domain
-
-service nginx start
-
-echo "##################################"
-echo "YOU NEED TO CHANGE FOLLOWING LINE AT /etc/nginx/conf.d/xxxxxxx.conf"
-echo ">>>listen 80;<<< to >>>listen 443;<<<"
-echo ""
-echo "##################################"
-echo "YOU NEED TO ADD FOLLOWING LINES AT /etc/nginx/conf.d/xxxxxxx.conf"
-echo "ssl on;"
-echo "ssl_certificate /etc/letsencrypt/live/YOUR_DOMAIN_HERE/fullchain.pem;"
-echo "ssl_certificate_key /etc/letsencrypt/live/YOUR_DOMAIN_HERE/privkey.pem;"
-echo ""
-echo "CHECK THIS CERTIFICATE ON: https://www.ssllabs.com/ssltest/analyze.html"
