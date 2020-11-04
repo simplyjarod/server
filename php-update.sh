@@ -27,7 +27,7 @@ else
 fi
 
 # get the latest version remi-php file (ie. remi-php74.repo)
-repofile=$(ls /etc/yum.repos.d/remi-php*.repo -r | head -1)
+repofile=$(ls /etc/yum.repos.d/remi-php7*.repo -r | head -1) # error while upgrading to php 8.0
 # change the enabled bit from 0 to 1 and enable the mirrorlist (only first occurrence)
 sed -i "0,/enabled=0/s/enabled=0/enabled=1/" $repofile
 sed -i "0,/#mirrorlist/s/#mirrorlist/mirrorlist/" $repofile
