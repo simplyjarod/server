@@ -34,8 +34,6 @@ fi
 
 # por algun motivo no cambia bien a https, deja http aunque cambia el dominio
 
-# NO EJECUTAR cambia emails@....!! sed "s/-$old--Domain/$newDomain/g" $fil-e > $filereplaced
-
 # From https:
 sed "s/https%3A%2F%2F$oldDomain/$http:%3A%2F%2F$newDomain/g" $file > $file-replaced
 sed -i "s/https:\\\\\/\\\\\/$oldDomain/$http:\\\\\/\\\\\/$newDomain/g" $file-replaced
@@ -45,6 +43,11 @@ sed -i "s/https:\/\/$oldDomain/$http:\/\/$newDomain/g" $file-replaced
 sed -i "s/http%3A%2F%2F$oldDomain/$http:%3A%2F%2F$newDomain/g" $file-replaced
 sed -i "s/http:\\\\\/\\\\\/$oldDomain/$http:\\\\\/\\\\\/$newDomain/g" $file-replaced
 sed -i "s/http:\/\/$oldDomain/$http:\/\/$newDomain/g" $file-replaced
+
+# From generic //:
+sed -i "s/%2F%2F$oldDomain/%2F%2F$newDomain/g" $file-replaced
+sed -i "s/\\\\\/\\\\\/$oldDomain/\\\\\/\\\\\/$newDomain/g" $file-replaced
+sed -i "s/\/\/$oldDomain/\/\/$newDomain/g" $file-replaced
 
 sed -i "s/www.$oldDomain/www.$newDomain/g" $file-replaced
 # OJO!! aquí se colaría un https://www... si haces replace de https a http
