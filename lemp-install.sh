@@ -50,6 +50,8 @@ echo "extension='/usr/lib/php/modules/soap.so'" >> /etc/php.ini
 service php-fpm start
 chkconfig --levels 235 php-fpm on
 
+./php-update.sh
+
 
 ############################
 # Set up a new virtual host:
