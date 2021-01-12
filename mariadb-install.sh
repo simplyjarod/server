@@ -1,5 +1,4 @@
 #!/bin/bash
-# More info at https://mariadb.com/kb/en/library/yum/
 
 # ARE YOU ROOT (or sudo)?
 if [[ $EUID -ne 0 ]]; then
@@ -7,24 +6,9 @@ if [[ $EUID -ne 0 ]]; then
 	exit 1
 fi
 
-centos_version=$(rpm -qa \*-release | grep -Ei "oracle|redhat|centos" | cut -d"-" -f3)
+centos_version=$(rpm -qa \*-release | grep -Ei "oracle|redhat|centos" | sed 's/[^6-8]*//g' | cut -c1)
 
-
-# baseurl = http://yum.mariadb.org/10.3/centos6-amd64
-# baseurl = http://yum.mariadb.org/10.3/centos7-amd64
-cat >/etc/yum.repos.d/MariaDB.repo << EOL
-[mariadb]
-name = MariaDB
-baseurl = http://yum.mariadb.org/10.3/centos$centos_version-amd64
-gpgkey=https://yum.mariadb.org/RPM-GPG-KEY-MariaDB
-gpgcheck=1
-EOL
-
-rpm --import https://yum.mariadb.org/RPM-GPG-KEY-MariaDB
-
-yum update -y
-
-yum install MariaDB-server MariaDB-client -y
+yum install mariadb-server -y
 
 
 #########################
@@ -37,13 +21,13 @@ if [ "$centos_version" -eq 6 ]; then
 	mysql_secure_installation
 	service mysql restart
 
-#########################
-# CentOS 7 installation #
-#########################
+###########################
+# CentOS 7/8 installation #
+###########################
 else
 	
-	systemctl enable mysql # or chkconfig --levels 235 mysql on
-	systemctl start mysql
+	systemctl enable mariadb
+	systemctl start mariadb.service
 	mysql_secure_installation
-	systemctl restart mysql
+	systemctl restart mariadb
 fi
