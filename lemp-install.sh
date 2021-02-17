@@ -6,7 +6,7 @@ if [[ $EUID -ne 0 ]]; then
 	exit 1
 fi
 
-centos_version=$(rpm -qa \*-release | grep -Ei "oracle|redhat|centos" | cut -d"-" -f3)
+centos_version=$(rpm -qa \*-release | grep -Ei "oracle|redhat|centos" | sed 's/[^6-8]*//g' | cut -c1)
 
 
 #####################################
@@ -40,7 +40,12 @@ echo "***** MYSQL/MARIADB INSTALLATION *****"
 echo "***** PHP INSTALLATION *****"
 ###################################
 
-yum install php php-fpm php-mysql php-mysqli php-gd php-xml php-mbstring php-mcrypt* php-soap php-bcmath -y
+yum install php php-fpm php-mysqli php-gd php-xml php-mbstring php-soap php-bcmath -y
+if [ "$centos_version" -le 7 ]; then
+	yum install php-mysql php-mcryp* -y
+else
+	yum install php-json -y
+fi
 \cp php/php.ini /etc/
 \cp php/www.conf /etc/php-fpm.d/
 chown root:nginx /var/lib/php/session/
