@@ -6,24 +6,30 @@ if [[ $EUID -ne 0 ]]; then
 	exit 1
 fi
 
-centos_version=$(rpm -qa \*-release | grep -Ei "oracle|redhat|centos" | cut -d"-" -f3)
+centos_version=$(rpm -qa \*-release | grep -Ei "oracle|redhat|centos" | sed 's/[^6-8]*//g' | cut -c1)
 
 #########################
 # CentOS 6 installation #
 #########################
 if [ "$centos_version" -eq 6 ]; then
 
-  rpm -Uvh https://dl.fedoraproject.org/pub/epel/epel-release-latest-6.noarch.rpm
-  rpm -Uvh https://rpms.remirepo.net/enterprise/remi-release-6.rpm
+	rpm -Uvh https://dl.fedoraproject.org/pub/epel/epel-release-latest-6.noarch.rpm
+	rpm -Uvh https://rpms.remirepo.net/enterprise/remi-release-6.rpm
   
 #########################
 # CentOS 7 installation #
 #########################
+elif [ "$centos_version" -eq 7 ]; then
+
+	rpm -Uvh https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm
+	rpm -Uvh https://rpms.remirepo.net/enterprise/remi-release-7.rpm
+
+#########################
+# CentOS 8 installation #
+#########################
 else
 
-  rpm -Uvh https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm
-  rpm -Uvh https://rpms.remirepo.net/enterprise/remi-release-7.rpm
-
+	exit 1
 fi
 
 # get the latest version remi-php file (ie. remi-php74.repo)
