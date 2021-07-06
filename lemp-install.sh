@@ -13,7 +13,7 @@ centos_version=$(rpm -qa \*-release | grep -Ei "oracle|redhat|centos" | sed 's/[
 echo "***** NGINX INSTALLATION *****"
 #####################################
 
-yum install epel-release -y # nginx is not available straight from CentOS
+yum -y install epel-release || amazon-linux-extras install epel -y # nginx is not available straight from CentOS
 yum install nginx -y
 \cp nginx/nginx.conf /etc/nginx/
 \cp nginx/security.inc /etc/nginx/conf.d/
