@@ -1,6 +1,8 @@
-# Disable some logs:
-location = /favicon.ico { access_log off; log_not_found off; }
-location = /robots.txt  { access_log off; log_not_found off; }
+# Disable some useless error messages:
+location ~ ^/(favicon.ico|robots.txt|sitemap.xml) {
+	access_log off;
+	log_not_found off;
+}
 
 location = /apple-touch-icon.png { access_log off; log_not_found off; }
 location = /apple-touch-icon-precomposed.png { access_log off; log_not_found off; }
