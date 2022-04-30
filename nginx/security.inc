@@ -1,3 +1,28 @@
+# dot dirs:
+location ~* ^/\.(aws|env|git) {
+	deny           all;
+	access_log     off;
+	log_not_found  off;
+	error_log      /dev/null;
+}
+
+# dot files:
+location ~* \.(htaccess|htpasswd|ini|log|sh)$ {
+	deny           all;
+	access_log     off;
+	log_not_found  off;
+	error_log      /dev/null;
+}
+
+# extensions:
+location ~* (.asp|.aspx|.cgi|.cs|.esp|.jsp|.rsp)$ {
+	deny           all;
+	access_log     off;
+	log_not_found  off;
+	error_log      /dev/null;
+}
+
+
 # Only allow these request methods:
 if ($request_method !~ ^(GET|HEAD|POST)$ ) {
 	return 444;
@@ -10,7 +35,7 @@ if ($query_string ~* (ambien|blue\spill|cialis|cocaine|ejaculation|erectile|erec
 
 
 # BLOCK USER AGENTS:
-if ($http_user_agent ~* (AhrefsBot|Antivirx|Arian|Baiduspider|The\sBeast|BackDoorBot|BackWeb|BlackWidow|BUbiNG|ChinaClaw|curl|EmailWolf|GetRight|GetWeb!|Go!Zilla|Go-Ahead-Got-It|GrabNet|hacker|libwww-perl|malicious|MetaURI|netcrawl|NetSpider|NetZIP|Netcraft|NextGenSearchBot|NimbleCrawler|Ninja|npbot|perl|Octopus|Pyth|Python|PycURL|TurnitinBot|WebBandit|WebCopier|wget|Widow|WordPress)) {
+if ($http_user_agent ~* (AhrefsBot|Antivirx|Arian|Baiduspider|The\sBeast|BackDoorBot|BackWeb|BlackWidow|BUbiNG|ChinaClaw|curl|EmailWolf|GetRight|GetWeb!|Go!Zilla|Go-Ahead-Got-It|GrabNet|hacker|libwww-perl|malicious|MetaURI|netcrawl|NetSpider|NetZIP|Netcraft|NextGenSearchBot|NimbleCrawler|Ninja|npbot|paloaltonetworks.com|pdrlabs.net|perl|Octopus|Pyth|Python|PycURL|TurnitinBot|WebBandit|WebCopier|wget|Widow|WordPress)) {
 	return 403;
 }
 
