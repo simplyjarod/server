@@ -20,7 +20,7 @@ yum install nginx -y
 \cp nginx/logging.inc /etc/nginx/conf.d/
 \cp nginx/wordpress.inc /etc/nginx/conf.d/
 #mv /etc/nginx/conf.d/default.conf /etc/nginx/conf.d/default.conf.old
-mv 404.html /usr/share/nginx/html -f
+mv 40*.html /usr/share/nginx/html -f
 mv 50x.html /usr/share/nginx/html -f
 
 # Diffie-Hellman cipher:

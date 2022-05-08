@@ -1,4 +1,4 @@
-# CentOS 6 & 7 server installation and configuration
+# CentOS 6, 7 & 8 server installation and configuration
 
 Please, **download _all files_ before executing any script**. There are several dependencies between them. You can use:
 ```bash
@@ -32,7 +32,7 @@ It is mandatory to have nginx installed previously.
 ## mysql: create and remove database and user
 Run `./mysql-create-db-and-user.sh` from the folder this file is placed. You will be asked for **mysql's root password**.  
 Run `./mysql-remove-db-and-user.sh` from the folder this file is placed. You will be asked for **mysql's root password**.  
-It is mandatory to have mysql or maridb installed previously.
+It is mandatory to have mysql or mariadb installed previously.
 
 
 ## iptables: accept http and mysql connections
