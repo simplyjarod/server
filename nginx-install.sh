@@ -41,6 +41,9 @@ elif [[ $os =~ "ubuntu" ]]; then # $os contains "ubuntu"
 
     rm -f /etc/nginx/sites-enabled/default
 
+	apt remove apache2 -y
+	apt autoremove -y
+
 else
 	echo -e "\e[91mOS not detected. Nothing was done\e[0m"
 	exit 1

@@ -6,6 +6,10 @@ if [[ $EUID -ne 0 ]]; then
 	exit 1
 fi
 
+# Operative System:
+os=$(grep ^ID= /etc/os-release | cut -d "=" -f 2)
+os=${os,,} #tolower
+
 
 # Si no hay parametro se pide por pantalla:
 if [ -z $1 ]; then
@@ -39,7 +43,15 @@ if [[ $ip =~ ^[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}$ ]]; then
 	done
 
 	iptables -I INPUT -p tcp -s $ip --dport 80 -j ACCEPT
-	service iptables save
+
+	if [[ $os =~ "centos" ]]; then # $os contains "centos"
+		service iptables save
+	elif [[ $os =~ "ubuntu" ]]; then # $os contains "ubuntu"
+		/sbin/iptables-save > /etc/iptables/rules.v4
+	else
+		echo -e "\e[91mOS not detected. Iptables rules were not saved.\e[0m"
+		exit 1
+	fi
 	exit 0
 else
 	echo -e "\e[91mThe introduced IP does not seem to be correct.\e[0m"
