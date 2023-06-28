@@ -6,17 +6,14 @@ if [[ $EUID -ne 0 ]]; then
 	exit 1
 fi
 
-# Operative System:
-os=$(grep ^ID= /etc/os-release | cut -d "=" -f 2)
-os=${os,,} #tolower
 
 if [ -z $1 ]; then # no hay parametros en la llamada, los pedimos por pantalla:
 
 	echo "Public web folder will be /home/user_name/public_html"
-	read -r -p "Set user name (user will be created if does not exist): " username
+	read -r -e -p "Set user name (user will be created if does not exist): " username
 	user=${username,,} # tolower
 
-	read -r -p "Set domain name (do not write http or www) (e.g. domain.com): " domain
+	read -r -e -p "Set domain name (do not write http or www) (e.g. domain.com): " domain
 	domain=${domain,,} # tolower
 
 elif [ $# -ne 2 ]; then # hay parametros, pero no hay 2
@@ -40,14 +37,14 @@ chmod +x /home/$user  # nginx needs to execute here
 
 
 # nginx virtual host config file:
-if [[ $os =~ "centos" ]]; then # $os contains "centos"
+if [ -x "$(command -v yum)" ]; then
 
 	\cp nginx/default.conf /etc/nginx/conf.d/$user.conf
 	sed -i "s|CHANGE_THIS_USER_NAME|$user|g" /etc/nginx/conf.d/$user.conf
 
 	sed -i "s|CHANGE_THIS_DOMAIN_NAME|$domain|g" /etc/nginx/conf.d/$user.conf
 
-elif [[ $os =~ "ubuntu" ]]; then # $os contains "ubuntu"
+elif [ -x "$(command -v apt-get)" ]; then
 
 	\cp nginx/default.conf /etc/nginx/sites-available/$user.conf
 	sed -i "s|CHANGE_THIS_USER_NAME|$user|g" /etc/nginx/sites-available/$user.conf
@@ -58,11 +55,14 @@ elif [[ $os =~ "ubuntu" ]]; then # $os contains "ubuntu"
 
 	ln -s /etc/nginx/sites-available/$user.conf /etc/nginx/sites-enabled
 
+else
+	echo -e "\e[91mUnsupported system. Please add virtual host manually.\e[0m"
+	exit 1
 fi
 
 
 # php-fpm pool config file:
-if [[ $os =~ "centos" ]]; then # $os contains "centos"
+if [ -x "$(command -v yum)" ]; then
 	\cp php/pool.conf /etc/php-fpm.d/$user.conf
 	sed -i "s|CHANGE_THIS_USER_NAME|$user|g" /etc/php-fpm.d/$user.conf
 
@@ -72,7 +72,7 @@ if [[ $os =~ "centos" ]]; then # $os contains "centos"
 
 	service php-fpm restart
 
-elif [[ $os =~ "ubuntu" ]]; then # $os contains "ubuntu"
+elif [ -x "$(command -v apt-get)" ]; then
 
 	php_version=$(php -v | head -1 | cut -d " " -f 2 | cut -d "." -f 1-2)
 

@@ -6,12 +6,8 @@ if [[ $EUID -ne 0 ]]; then
 	exit 1
 fi
 
-# Operative System:
-os=$(grep ^ID= /etc/os-release | cut -d "=" -f 2)
-os=${os,,} #tolower
 
-
-if [[ $os =~ "centos" ]]; then # $os contains "centos"
+if [ -x "$(command -v yum)" ]; then
 	
 	centos_version=$(rpm -qa \*-release | grep -Ei "oracle|redhat|centos" | sed 's/[^6-8]*//g' | cut -c1)
 	
@@ -32,9 +28,9 @@ if [[ $os =~ "centos" ]]; then # $os contains "centos"
 
 	./php-update.sh
 	
-elif [[ $os =~ "ubuntu" ]]; then # $os contains "ubuntu"
+elif [ -x "$(command -v apt-get)" ]; then
 
-	apt install php php-fpm php-mysql php-mysqli php-curl php-gd php-xml php-mbstring php-soap php-bcmath -y
+	apt-get install php php-fpm php-mysql php-mysqli php-curl php-gd php-xml php-mbstring php-soap php-bcmath -y
 
 	php_version=$(php -v | head -1 | cut -d " " -f 2 | cut -d "." -f 1-2)
 
@@ -52,7 +48,7 @@ elif [[ $os =~ "ubuntu" ]]; then # $os contains "ubuntu"
 	service php$php_version-fpm restart
 
 else
-	echo -e "\e[91mOS not detected. Nothing was done\e[0m"
+	echo -e "\e[91mUnsupported system. Please install php manually.\e[0m"
 	exit 1
 fi
 

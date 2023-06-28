@@ -3,9 +3,9 @@
 
 if [ -z $1 ]; then # no hay parametros en la llamada, los pedimos por pantalla:
 
-	read -r -p "Old domain (do not write http or www) (e.g. domain.com): " oldDomain
-	read -r -p "New domain (do not write http or www) (e.g. domain.com): " newDomain
-	read -r -p "File to replace domains (will be saved as a copy): " file
+	read -r -e -p "Old domain (do not write http or www) (e.g. domain.com): " oldDomain
+	read -r -e -p "New domain (do not write http or www) (e.g. domain.com): " newDomain
+	read -r -e -p "File to replace domains (will be saved as a copy): " file
 	read -r -p "Do you want to use https on new domain? [y/N] " useHttps
 
 	if [ $oldDomain == $newDomain ]; then
@@ -25,8 +25,7 @@ else
 fi
 
 useHttps=${useHttps,,} #tolower
-if [[ $useHttps =~ ^(yes|y)$ ]]
-then
+if [[ $useHttps =~ ^(yes|y)$ ]]; then
 	http='https'
 else
 	http='http'

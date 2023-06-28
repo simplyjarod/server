@@ -6,12 +6,8 @@ if [[ $EUID -ne 0 ]]; then
 	exit 1
 fi
 
-# Operative System:
-os=$(grep ^ID= /etc/os-release | cut -d "=" -f 2)
-os=${os,,} #tolower
 
-
-if [[ $os =~ "centos" ]]; then # $os contains "centos"
+if [ -x "$(command -v yum)" ]; then
 
 	yum install mariadb-server -y
 	
@@ -32,9 +28,9 @@ if [[ $os =~ "centos" ]]; then # $os contains "centos"
 		systemctl restart mariadb
 	fi
 
-elif [[ $os =~ "ubuntu" ]]; then # $os contains "ubuntu"
+elif [ -x "$(command -v apt-get)" ]; then
 
-	apt install mariadb-server -y
+	apt-get install mariadb-server -y
 	
 	mysql_secure_installation
 	systemctl enable mariadb

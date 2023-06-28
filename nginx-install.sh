@@ -6,11 +6,8 @@ if [[ $EUID -ne 0 ]]; then
 	exit 1
 fi
 
-# Operative System:
-os=$(grep ^ID= /etc/os-release | cut -d "=" -f 2)
-os=${os,,} #tolower
 
-if [[ $os =~ "centos" ]]; then # $os contains "centos"
+if [ -x "$(command -v yum)" ]; then
 	yum -y install epel-release || amazon-linux-extras install epel -y # nginx is not available straight from CentOS
 	yum install nginx -y
 	\cp nginx/nginx.conf /etc/nginx/
@@ -22,8 +19,8 @@ if [[ $os =~ "centos" ]]; then # $os contains "centos"
 
 	chkconfig --levels 235 nginx on
 
-elif [[ $os =~ "ubuntu" ]]; then # $os contains "ubuntu"
-	apt install nginx -y
+elif [ -x "$(command -v apt-get)" ]; then
+	apt-get install nginx -y
 
 	sed -i '/http {/a\\tindex index.php index.html index.htm;' /etc/nginx/nginx.conf
 	sed -i '/http {/a\\tlog_format main $remote_addr $remote_user [$time_local] "$request" $status $body_bytes_sent $http_referer "$http_user_agent" "$http_x_forwarded_for";' /etc/nginx/nginx.conf
@@ -41,11 +38,12 @@ elif [[ $os =~ "ubuntu" ]]; then # $os contains "ubuntu"
 
     rm -f /etc/nginx/sites-enabled/default
 
-	apt remove apache2 -y
-	apt autoremove -y
+	service apache2 stop
+	apt-get purge apache2 -y
+	apt-get autoremove -y
 
 else
-	echo -e "\e[91mOS not detected. Nothing was done\e[0m"
+	echo -e "\e[91mUnsupported system. Please install nginx manually.\e[0m"
 	exit 1
 fi
 

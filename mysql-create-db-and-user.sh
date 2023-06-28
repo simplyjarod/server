@@ -2,8 +2,8 @@
 
 if [ -z $1 ]; then # no hay parametros en la llamada, los pedimos por pantalla:
 
-	read -r -p "Name of new DataBase: " dbname
-	read -r -p "Name of new DB User: " dbuser
+	read -r -e -p "Name of new DataBase: " dbname
+	read -r -e -p "Name of new DB User: " dbuser
 	read -s -p "New password for DB User $dbuser: " dbpass
 	echo "" # we need a new line after the password
 	read -s -p "Retype new password for user $dbuser: " dbpass2
@@ -30,7 +30,12 @@ Q2="GRANT ALL PRIVILEGES ON $dbname.* TO '$dbuser'@'%' IDENTIFIED BY '$dbpass';"
 Q3="FLUSH PRIVILEGES;"
 SQL="${Q1}${Q2}${Q3}"
 
-echo "Please, type MySQL's root password:"
-`which mysql` -uroot -p -e "$SQL"
+if [ -x "$(command -v mysql)" ]; then
+	echo "Please, type MySQL's root password:"
+	mysql -uroot -p -e "$SQL"
+	echo "DB $dbname created with all privileges granted to DB user $dbuser"
+else
+	echo -e "\e[91mMySQL is not installed. DB not created.\e[0m"
+	exit 1
+fi
 
-echo "DB $dbname created with all privileges granted to DB user $dbuser"

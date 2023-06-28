@@ -2,8 +2,8 @@
 
 if [ -z $1 ]; then # no hay parametros en la llamada, los pedimos por pantalla:
 
-	read -r -p "Name of DataBase to remove: " dbname
-	read -r -p "Name of DB User to remove: " dbuser
+	read -r -e -p "Name of DataBase to remove: " dbname
+	read -r -e -p "Name of DB User to remove: " dbuser
 
 elif [ $# -ne 2 ]; then # hay parametros, pero no hay 2
 	echo "Usage: $0 dbname dbuser"
@@ -21,7 +21,11 @@ Q3="FLUSH PRIVILEGES;";
 Q4="SELECT Host, Db, User FROM mysql.db WHERE User IN (SELECT User FROM mysql.user);"
 SQL="${Q1}${Q2}${Q3}${Q4}"
 
-echo "Se va a solicitar la clave del usuario root de mysql"
-`which mysql` -uroot -p -e "$SQL"
-
-echo "DB $dbname and user $dbuser removed"
+if [ -x "$(command -v mysql)" ]; then
+	echo "Please, type MySQL's root password:"
+	mysql -uroot -p -e "$SQL"
+	echo "DB $dbname and user $dbuser removed"
+else
+	echo -e "\e[91mMySQL is not installed. DB not created.\e[0m"
+	exit 1
+fi

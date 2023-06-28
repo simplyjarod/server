@@ -6,22 +6,15 @@ if [[ $EUID -ne 0 ]]; then
   exit 1
 fi
 
-os=$(grep ^ID= /etc/os-release | cut -d "=" -f 2)
-os=${os,,} #tolower
-
 
 ######################################
 echo "***** REDIS INSTALLATION *****"
 ######################################
 
-if [[ $os =~ "centos" ]]; then # $os contains "centos"
-  # TO DO
-
-elif [[ $os =~ "ubuntu" ]]; then # $os contains "ubuntu"
-	apt install redis-server -y
-
+if [ -x "$(command -v apt-get)" ]; then
+	apt-get install redis-server -y
 else
-  echo -e "\e[91mOS not detected. Redis was not installed\e[0m"
+  echo -e "\e[91mUnsupported system. Please install redis manually.\e[0m"
   exit 1
 fi
 

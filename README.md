@@ -33,7 +33,6 @@ chmod u+x *.sh -R
 - Update PHP to latest version
 - [Install NodeJS, NPM and PM2](#install-nodejs-npm-and-pm2)
 - [Install MariaDB](#install-mariadb)
-- Install MongoDB
 - [Create MySQL DB and user](#create-mysql-db-and-user)
 - [Remove MySQL DB and user](#remove-mysql-db-and-user)
 - Install REDIS
@@ -99,4 +98,4 @@ It is mandatory to have MySQL or MariaDB installed previously.
 
 ## Install WordPress
 Run `./wordpress-install.sh` as **root** from the folder this file is placed.
-This will download a new WordPress copy and install it in the folder you specify, creating and configuring a new database, user and password (random names or the ones you provide).
+This will download a new WordPress copy and install it in the folder you specify, configuring (or creating if not exists) database, user and password (random names or the ones you provide).

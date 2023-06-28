@@ -37,7 +37,7 @@ echo "***** PHP INSTALLATION *****"
 ./nginx-add-virtual-host.sh
 
 
-if type -path "iptables" > /dev/null 2>&1; then
+if [ -x "$(command -v iptables)" ]; then
 ###########################################
 echo "***** FIREWALL SETUP (port 80) *****"
 ###########################################
@@ -52,9 +52,9 @@ echo "***** RESTARTING SERVERS... *****"
 
 service nginx restart
 
-if [[ $os =~ "centos" ]]; then # $os contains "centos"
+if [ -x "$(command -v yum)" ]; then
 	service php-fpm restart
-elif [[ $os =~ "ubuntu" ]]; then # $os contains "ubuntu"
+elif [ -x "$(command -v apt-get)" ]; then
 	php_version=$(php -v | head -1 | cut -d " " -f 2 | cut -d "." -f 1-2)
 	service php$php_version-fpm restart
 fi

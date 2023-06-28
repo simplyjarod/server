@@ -8,25 +8,22 @@ if [[ $EUID -ne 0 ]]; then
 	exit 1
 fi
 
-os=$(grep ^ID= /etc/os-release | cut -d "=" -f 2)
-os=${os,,} #tolower
-
 
 ######################################
 echo "***** NODEJS INSTALLATION *****"
 ######################################
 
-if [[ $os =~ "centos" ]]; then # $os contains "centos"
+if [ -x "$(command -v yum)" ]; then
 	yum install -y gcc-c++ make
 	curl -sL https://rpm.nodesource.com/setup_lts.x | sudo -E bash -
 	yum install -y nodejs
 
-elif [[ $os =~ "ubuntu" ]]; then # $os contains "ubuntu"
+elif [ -x "$(command -v apt-get)" ]; then
 	curl -fsSL https://deb.nodesource.com/setup_lts.x | sudo -E bash -
 	apt-get install -y nodejs
 
 else
-	echo -e "\e[91mOS not detected. NodeJS was not installed\e[0m"
+	echo -e "\e[91mUnsupported system. Please install NodeJS manually.\e[0m"
 	exit 1
 fi
 
@@ -35,12 +32,3 @@ fi
 echo "***** PM2 INSTALLATION *****"
 ###################################
 npm install pm2@latest -g
-
-
-if type -path "iptables" > /dev/null 2>&1; then
-###########################################
-echo "***** FIREWALL SETUP (port 80) *****"
-###########################################
-
-./iptables-accept-http.sh \*
-fi

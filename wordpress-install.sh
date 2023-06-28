@@ -2,27 +2,27 @@
 
 # si no hay parametros en la llamada los pedimos por pantalla:
 if [ -z $2 ]; then
-	read -r -p "Absolute path to install Wordpress in (e.g. /home/user/public_html): " path
-	read -r -p "User name for permission purposes (e.g. nginx): " user
+	read -r -e -p "Absolute path to install Wordpress in (e.g. /home/user/public_html): " path
+	read -r -e -p "User name for permission purposes (e.g. nginx): " user
 else
 	path=$1
 	user=$2
 fi
 
 if [ -z $5 ]; then
-	read -r -p "Do you want to set custom DB name, DB user and DB pass? [Y/n]: " custom_db_names
+	read -r -p "Set custom DB name, user and pass? If not, a new DB will be created with random name. [Y/n]: " custom_db_names
 	custom_db_names=${custom_db_names,,} # tolower
-	
-	if [[ $custom_db_names =~ ^(yes|y)$ ]]
-	then
-		read -r -p "Name of new DataBase: " dbname
-		read -r -p "Name of new DB User: " dbuser
-		read -s -p "New password for DB User $dbuser: " dbpass
-		echo "" # we need a new line after the password
-	else
+
+	if [[ $custom_db_names =~ ^(no|n)$ ]]; then
 		dbname=$(cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w 10 | head -n 1)
 		dbuser=$(cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w 8 | head -n 1)
-		dbpass=$(cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w 32 | head -n 1)
+		dbpass=$(cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w 32 | head -n 1)	
+	else
+		echo "DB will be created if it does not exist."
+		read -r -e -p "Name of DataBase: " dbname
+		read -r -e -p "Name of DB User: " dbuser
+		read -s -p "Password for DB User $dbuser: " dbpass
+		echo "" # we need a new line after the password
 	fi
 else
 	dbname=$3
@@ -36,8 +36,7 @@ if [ ! -d "$path" ]; then
 	read -r -p "Path does not exists. Create it? [Y/n]: " create_path
 	create_path=${create_path,,} # tolower
 
-	if [[ $create_path =~ ^(no|n)$ ]]
-	then
+	if [[ $create_path =~ ^(no|n)$ ]]; then
 		exit 1
 	else
 		mkdir -p $path
@@ -45,8 +44,21 @@ if [ ! -d "$path" ]; then
 fi
 
 
-# wordpress installation:
-if ! type -path "wget" > /dev/null 2>&1; then yum install wget -y; fi
+# WordPress installation (we need to download it from wordpress.org):
+
+# Check if wget is installed and try to install it if possible:
+if ! command -v wget &>/dev/null; then
+	if [ -x "$(command -v apt-get)" ]; then
+		apt-get update && apt-get install wget -y
+	elif [ -x "$(command -v yum)" ]; then
+		yum install wget -y
+	else
+		echo -e "\e[91mUnsupported system. Please install wget manually and re-run this script again.\e[0m"
+		exit 1
+	fi
+fi
+
+# WordPress download:
 wget https://wordpress.org/latest.tar.gz
 tar -zxvf latest.tar.gz
 rm -f latest.tar.gz

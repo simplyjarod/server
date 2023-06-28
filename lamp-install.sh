@@ -6,6 +6,13 @@ if [[ $EUID -ne 0 ]]; then
 	exit 1
 fi
 
+
+if ! [ -x "$(command -v yum)" ]; then
+	echo -e "\e[91mUnsupported system. Please install apache manually.\e[0m"
+	exit 1
+fi
+
+
 centos_version=$(rpm -qa \*-release | grep -Ei "oracle|redhat|centos" | cut -d"-" -f3)
 
 
