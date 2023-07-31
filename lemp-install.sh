@@ -6,12 +6,6 @@ if [[ $EUID -ne 0 ]]; then
 	exit 1
 fi
 
-# Operative System:
-os=$(grep ^ID= /etc/os-release | cut -d "=" -f 2)
-os=${os,,} #tolower
-
-#centos_version=$(rpm -qa \*-release | grep -Ei "oracle|redhat|centos" | sed 's/[^6-8]*//g' | cut -c1)
-
 
 #####################################
 echo "***** NGINX INSTALLATION *****"
@@ -29,6 +23,14 @@ echo "***** MYSQL/MARIADB INSTALLATION *****"
 echo "***** PHP INSTALLATION *****"
 ###################################
 ./php-install.sh
+
+# php installs undesired apache2 (conflicts with nginx) so we remove it
+if [ -x "$(command -v apt-get)" ]; then
+	systemctl stop apache2
+	apt remove apache2 -y
+	apt purge apache2 -y
+	apt autoremove -y
+fi
 
 
 ############################
