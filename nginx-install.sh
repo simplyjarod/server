@@ -22,7 +22,9 @@ if [ -x "$(command -v yum)" ]; then
 elif [ -x "$(command -v apt-get)" ]; then
 	apt-get install nginx -y
 
-	sed -i '/http {/a\\tindex index.php index.html index.htm;' /etc/nginx/nginx.conf
+	sed -i '/http {/a\\tclient_max_body_size 100M;\n' /etc/nginx/nginx.conf
+
+	sed -i '/http {/a\\tindex index.php index.html index.htm;\n' /etc/nginx/nginx.conf
 	sed -i '/http {/a\\tlog_format main $remote_addr $remote_user [$time_local] "$request" $status $body_bytes_sent $http_referer "$http_user_agent" "$http_x_forwarded_for";' /etc/nginx/nginx.conf
 	sed -i '/http {/a\\tkeepalive_timeout 7;' /etc/nginx/nginx.conf
 	sed -i '/http {/a\\tcharset utf-8;' /etc/nginx/nginx.conf
@@ -36,7 +38,7 @@ elif [ -x "$(command -v apt-get)" ]; then
 	sed -i -e '/\(#\|\)\s*gzip_proxied/s/^.*$/\tgzip_proxied any;/' /etc/nginx/nginx.conf
 	sed -i -e '/\(#\|\)\s*gzip_types/s/^.*$/\tgzip_types text\/plain text\/css text\/xml  text\/x-component text\/javascript application\/javascript application\/x-javascriptapplication\/xml application\/xhtml+xml application\/xml+rss application\/json application\/x-font-ttf application\/x-font-opentype application\/vnd.ms-fontobject image\/svg+xml image\/x-icon image\/bmp;/' /etc/nginx/nginx.conf
 
-    rm -f /etc/nginx/sites-enabled/default
+	rm -f /etc/nginx/sites-enabled/default
 
 	service apache2 stop
 	apt-get purge apache2 -y
