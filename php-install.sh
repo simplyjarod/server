@@ -20,7 +20,7 @@ if [ -x "$(command -v yum)" ]; then
 	\cp php/php.ini /etc/
 	\cp php/www.conf /etc/php-fpm.d/
 	chown root:nginx /var/lib/php/session/
-	chmod 777 /var/lib/php/session/
+	chmod 0777 /var/lib/php/session/
 	echo "extension='/usr/lib/php/modules/soap.so'" >> /etc/php.ini
 
 	service php-fpm start
@@ -30,7 +30,7 @@ if [ -x "$(command -v yum)" ]; then
 	
 elif [ -x "$(command -v apt-get)" ]; then
 
-	apt-get install php php-fpm php-mysql php-mysqli php-curl php-gd php-xml php-mbstring php-soap php-bcmath -y
+	apt-get install php php-fpm php-mysql php-mysqli php-curl php-gd php-xml php-mbstring php-soap php-bcmath php-intl php-zip -y
 
 	php_version=$(php -v | head -1 | cut -d " " -f 2 | cut -d "." -f 1-2)
 
@@ -41,7 +41,7 @@ elif [ -x "$(command -v apt-get)" ]; then
 	sed -i -e '/\(;\|\)\s*memory_limit =/s/^.*$/memory_limit = 128M/' /etc/php/$php_version/fpm/php.ini
 	sed -i -e '/\(;\|\)\s*post_max_size =/s/^.*$/post_max_size = 100M/' /etc/php/$php_version/fpm/php.ini
 	sed -i -e '/\(;\|\)\s*upload_max_filesize =/s/^.*$/upload_max_filesize = 100M/' /etc/php/$php_version/fpm/php.ini
-	sed -i -e '/\(;\|\)\s*date.timezone =/s/^.*$/date.timezone = "Europe\/Madrizzzz"/' /etc/php/$php_version/fpm/php.ini
+	sed -i -e '/\(;\|\)\s*date.timezone =/s/^.*$/date.timezone = "Europe\/Madrid"/' /etc/php/$php_version/fpm/php.ini
 
 	#\cp php/www.conf /etc/php/$php_version/fpm/pool.d/
 

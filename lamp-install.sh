@@ -7,25 +7,10 @@ if [[ $EUID -ne 0 ]]; then
 fi
 
 
-if ! [ -x "$(command -v yum)" ]; then
-	echo -e "\e[91mUnsupported system. Please install apache manually.\e[0m"
-	exit 1
-fi
-
-
-centos_version=$(rpm -qa \*-release | grep -Ei "oracle|redhat|centos" | cut -d"-" -f3)
-
-
 ######################################
 echo "***** APACHE INSTALLATION *****"
 ######################################
-
-yum install -y httpd
-\cp apache/httpd.conf /etc/httpd/conf/httpd.conf
-# to do: borrar welcome.conf, configurar errores, .htaccess...
-
-service httpd start
-chkconfig --levels 235 httpd on
+./apache-install.sh
 
 
 #############################################
@@ -37,29 +22,37 @@ echo "***** MYSQL/MARIADB INSTALLATION *****"
 ###################################
 echo "***** PHP INSTALLATION *****"
 ###################################
-
-yum install php php-mysql php-mysqli php-gd php-xml php-mbstring php-mcrypt* php-soap php-mbstring php-bcmath -y
-\cp php/php.ini /etc/php.ini
-\cp php/index.php /var/www/html/index.php
-
-service php start
-chkconfig --levels 235 php on
+./php-install.sh
 
 
-############################################
-#echo "***** PHP-MYADMIN INSTALLATION *****"
-############################################
+############################
+# Set up a new virtual host:
+############################
+./apache-add-virtual-host.sh
 
-#yum install phpmyadmin -y
-#\cp phpmyadmin/phpMyAdmin.conf /etc/httpd/conf.d/phpMyAdmin.conf
+
+if [ -x "$(command -v iptables)" ]; then
+###########################################
+echo "***** FIREWALL SETUP (port 80) *****"
+###########################################
+
+./iptables-accept-http.sh \*
+fi
 
 
 ########################################
 echo "***** RESTARTING SERVERS... *****"
 ########################################
 
-service httpd restart
-service php restart
+service apache2 restart
+
+if [ -x "$(command -v yum)" ]; then
+	service php-fpm restart
+elif [ -x "$(command -v apt-get)" ]; then
+	php_version=$(php -v | head -1 | cut -d " " -f 2 | cut -d "." -f 1-2)
+	service php$php_version-fpm restart
+fi
+
 service mysql restart
 
 

@@ -25,17 +25,17 @@ else
 fi
 
 
+# Install MySQL/MariaDB if it is not installed yet:
+if [ ! -x "$(command -v mysql)" ]; then
+	./mysql-install.sh
+fi
+
+
 Q1="CREATE DATABASE IF NOT EXISTS $dbname;"
 Q2="GRANT ALL PRIVILEGES ON $dbname.* TO '$dbuser'@'%' IDENTIFIED BY '$dbpass';"
 Q3="FLUSH PRIVILEGES;"
 SQL="${Q1}${Q2}${Q3}"
 
-if [ -x "$(command -v mysql)" ]; then
-	echo "Please, type MySQL's root password:"
-	mysql -uroot -p -e "$SQL"
-	echo "DB $dbname created with all privileges granted to DB user $dbuser"
-else
-	echo -e "\e[91mMySQL is not installed. DB not created.\e[0m"
-	exit 1
-fi
-
+echo "Please, type MySQL's root password:"
+mysql -uroot -p -e "$SQL"
+echo "DB $dbname created with all privileges granted to DB user $dbuser"

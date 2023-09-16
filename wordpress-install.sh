@@ -9,6 +9,8 @@ else
 	user=$2
 fi
 
+path="${path%/}" # removes last slash
+
 if [ -z $5 ]; then
 	read -r -p "Set custom DB name, user and pass? If not, a new DB will be created with random name. [Y/n]: " custom_db_names
 	custom_db_names=${custom_db_names,,} # tolower
