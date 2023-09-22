@@ -39,8 +39,18 @@ elif [ -x "$(command -v apt-get)" ]; then
 	sed -i -e '/\(#\|\)\s*gzip_proxied/s/^.*$/\tgzip_proxied any;/' /etc/nginx/nginx.conf
 	sed -i -e '/\(#\|\)\s*gzip_types/s/^.*$/\tgzip_types text\/plain text\/css text\/xml  text\/x-component text\/javascript application\/javascript application\/x-javascriptapplication\/xml application\/xhtml+xml application\/xml+rss application\/json application\/x-font-ttf application\/x-font-opentype application\/vnd.ms-fontobject image\/svg+xml image\/x-icon image\/bmp;/' /etc/nginx/nginx.conf
 
+	# remove default site config file from sites-enabled:
 	rm -f /etc/nginx/sites-enabled/default
 
+	# server to avoid access without domain (with IP):
+	echo "server {
+	listen 80;
+	server_name _; # no server name
+	return 444; # "No response" error
+}" >> /etc/nginx/sites-available/block-nodomain.conf
+	ln -s /etc/nginx/sites-available/block-nodomain.conf /etc/nginx/sites-enabled/block-nodomain.conf
+
+	# remove apache2:
 	service apache2 stop
 	apt-get purge apache2 -y
 	apt-get autoremove -y
