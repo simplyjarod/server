@@ -16,7 +16,7 @@ echo "***** APACHE INSTALLATION *****"
 #############################################
 echo "***** MYSQL/MARIADB INSTALLATION *****"
 #############################################
-./mariadb-install.sh
+./mysql-install.sh
 
 
 ###################################
