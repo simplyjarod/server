@@ -16,7 +16,7 @@ echo "***** NGINX INSTALLATION *****"
 #############################################
 echo "***** MYSQL/MARIADB INSTALLATION *****"
 #############################################
-./mariadb-install.sh
+./mysql-install.sh
 
 
 ###################################
