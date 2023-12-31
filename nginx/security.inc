@@ -15,7 +15,7 @@ location ~* \.(htaccess|htpasswd|ini|log|sh)$ {
 }
 
 # extensions:
-location ~* (.asp|.aspx|.cgi|.cs|.esp|.jsp|.rsp)$ {
+location ~* \.(asp|aspx|cgi|cs|esp|jsp|rsp)$ {
 	deny           all;
 	access_log     off;
 	log_not_found  off;
